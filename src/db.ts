@@ -40,8 +40,8 @@ export class DB {
    * option is set, the database is opened in
    * memory.
    */
-  static async create(path: string = ":memory:", options: SqliteOptions = {}) {
-     let wasm = await instantiate('/sqlite.wasm').exports;
+  static async create(wasmUrl: string, path: string = ":memory:", options: SqliteOptions = {}) {
+     let wasm = await instantiate(wasmUrl).exports;
       const db = new DB(path, options)
       db._wasm = wasm;
     // Try to open the database
