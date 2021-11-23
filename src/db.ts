@@ -44,24 +44,7 @@ export class DB {
      let wasm = (await instantiate(wasmUrl)).exports;
       const db = new DB(path, options)
       db._wasm = wasm;
-    // Try to open the database
-    const status = setStr(
-      wasm,
-      path,
-      (ptr) => wasm.open(ptr, flags),
-    );
-    if (status !== Status.SqliteOk) {
-      throw new SqliteError(wasm, status);
-    }
-    this._open = true;
-   }
-  
-  
-  constructor(path: string = ":memory:", options: SqliteOptions = {}) {
-    this._open = false;
-    this._statements = new Set();
-
-    // Configure flags
+    
     let flags = 0;
     switch (options.mode) {
       case "read":
@@ -81,6 +64,26 @@ export class DB {
     if (options.uri === true) {
       flags |= OpenFlags.Uri;
     }
+    
+    // Try to open the database
+    const status = setStr(
+      wasm,
+      path,
+      (ptr) => wasm.open(ptr, flags),
+    );
+    if (status !== Status.SqliteOk) {
+      throw new SqliteError(wasm, status);
+    }
+    this._open = true;
+   }
+  
+  
+  constructor(path: string = ":memory:", options: SqliteOptions = {}) {
+    this._open = false;
+    this._statements = new Set();
+
+    // Configure flags
+    
 
   }
 
