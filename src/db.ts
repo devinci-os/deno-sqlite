@@ -1,7 +1,6 @@
 import instantiate, { StatementPtr, Wasm } from "../build/sqlite.js";
-import { setStr } from "./wasm.ts";
+import { setStr, SqliteError } from "./wasm.ts";
 import { OpenFlags, Status, Values } from "./constants.ts";
-import { SqliteError } from "./error.ts";
 import { PreparedQuery, QueryParameterSet, Row, RowObject } from "./query.ts";
 
 /**
