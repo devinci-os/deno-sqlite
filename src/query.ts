@@ -1,7 +1,6 @@
 import { StatementPtr, Wasm } from "../build/sqlite.js";
-import { getStr, setArr, setStr } from "./wasm.ts";
+import { SqliteError, getStr, setArr, setStr } from "./wasm.ts";
 import { Status, Types, Values } from "./constants.ts";
-import { SqliteError } from "./error.ts";
 
 /**
  * The default type for returned rows.
