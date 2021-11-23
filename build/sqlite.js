@@ -6,7 +6,7 @@ import env from "./vfs.js";
 export default async function instantiate(url) {
   const module = await WebAssembly.compileStreaming(await fetch(url));
   const placeholder = { exports: null };
-  const instance = WebAssembly.Instance(module, env(placeholder));
+  const instance = new WebAssembly.Instance(module, env(placeholder));
   placeholder.exports = instance.exports;
   instance.exports.seed_rng(Date.now());
   return instance;
