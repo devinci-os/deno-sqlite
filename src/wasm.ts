@@ -1,4 +1,4 @@
-import { Wasm } from "../build/sqlite.js";
+import type { Wasm } from "../build/sqlite.js";
 import { SqliteError } from "./error.ts";
 
 // Move string to C
