@@ -74,7 +74,7 @@ export class DB {
     if (status !== Status.SqliteOk) {
       throw new SqliteError(wasm, status);
     }
-    this._open = true;
+    db._open = true;
    }
   
   
