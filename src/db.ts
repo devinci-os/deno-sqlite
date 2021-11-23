@@ -30,7 +30,7 @@ export class DB {
   private _open: boolean;
   private _statements: Set<StatementPtr>;
 
-  /**
+   /**
    * Create a new database. The file at the
    * given path will be opened with the
    * mode specified in options. The default
@@ -40,8 +40,24 @@ export class DB {
    * option is set, the database is opened in
    * memory.
    */
+  static async create(path: string = ":memory:", options: SqliteOptions = {}) {
+     let wasm = await instantiate('/sqlite.wasm').exports;
+      const db = new DB(path, options)
+      db._wasm = wasm;
+    // Try to open the database
+    const status = setStr(
+      wasm,
+      path,
+      (ptr) => wasm.open(ptr, flags),
+    );
+    if (status !== Status.SqliteOk) {
+      throw new SqliteError(wasm, status);
+    }
+    this._open = true;
+   }
+  
+  
   constructor(path: string = ":memory:", options: SqliteOptions = {}) {
-    this._wasm = instantiate().exports;
     this._open = false;
     this._statements = new Set();
 
@@ -66,16 +82,6 @@ export class DB {
       flags |= OpenFlags.Uri;
     }
 
-    // Try to open the database
-    const status = setStr(
-      this._wasm,
-      path,
-      (ptr) => this._wasm.open(ptr, flags),
-    );
-    if (status !== Status.SqliteOk) {
-      throw new SqliteError(this._wasm, status);
-    }
-    this._open = true;
   }
 
   /**
