@@ -75,6 +75,7 @@ export class DB {
       throw new SqliteError(wasm, status);
     }
     db._open = true;
+    return db;
    }
   
   
